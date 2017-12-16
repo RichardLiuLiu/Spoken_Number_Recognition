@@ -46,7 +46,7 @@ def extract_mfcc(file, fmax, nMel):
     plt.xticks([])
     plt.yticks([])
     plt.tight_layout()
-    plt.savefig('tmp/tmp/myImg.jpg', bbox_inches='tight', pad_inches=-0.1)
+    plt.savefig('tmp/tmp/myImg.png', bbox_inches='tight', pad_inches=-0.1)
     
     plt.close()  
     return
