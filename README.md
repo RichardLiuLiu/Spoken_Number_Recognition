@@ -18,7 +18,9 @@ Draw the spectrogram of each `.wav` file, and save as an image. In this way, the
 Use CNN to build a classifier for the dataset. The CNN model includes 2 Dense (fully connected) layers and 5 Convolution layers, with Max-Pooling and BatchNormalization layers in it.
 
 ## Evaluation
+At the training stage, the acc reaches 100% after 20 epochs, and val_acc reaches 98%. Very nice!
 
+At the real-time test stage, the error rate keeps very low. Nice!
 
 ## References
 [1] https://github.com/libphy/which_animal
