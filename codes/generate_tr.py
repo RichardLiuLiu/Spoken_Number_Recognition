@@ -6,12 +6,10 @@ import wave
 BLOCKSIZE = 128
 
 # Get recording parameters
-wf0 = wave.open('train/0_jackson_0.wav', 'rb')
-RATE     = wf0.getframerate()
-WIDTH    = wf0.getsampwidth()
-CHANNELS = wf0.getnchannels()
-LEN      = wf0.getnframes()
-wf0.close()
+RATE     = 22050
+WIDTH    = 2
+CHANNELS = 1
+LEN      = 1 * RATE
 
 def is_silent(data, THRESHOLD):
     "Returns 'True' if below the threshold"
@@ -20,9 +18,9 @@ def is_silent(data, THRESHOLD):
 def record(path):
     
     # Output wave file
-    output_wf = wave.open('myRecording/' + path, 'w')
+    output_wf = wave.open('spoken_numbers_wav/' + path, 'w')
     # output_wf = wave.open('222/-1_richard_22.wav', 'w')
-    output_wf.setframerate(48000)
+    output_wf.setframerate(RATE)
     output_wf.setsampwidth(WIDTH)
     output_wf.setnchannels(CHANNELS)
 
@@ -54,7 +52,7 @@ def record(path):
  
         output_value = np.array(input_value)
         
-        if numSilence > 5:
+        if numSilence > 14:
             break
         
         output_value = output_value.astype(int)
@@ -73,4 +71,4 @@ def record(path):
     p.terminate()
     output_wf.close()
 
-record('audio_ts/9/9_yicong_30.wav')
+record('yicong/0/0_Yicong_19.wav')

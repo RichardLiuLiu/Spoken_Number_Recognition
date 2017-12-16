@@ -23,15 +23,12 @@ ncol = 200
 
 BLOCKSIZE = 128
 
-# Get recording parameters
-wf0 = wave.open('train/0_jackson_0.wav', 'rb')
-RATE     = wf0.getframerate()
-WIDTH    = wf0.getsampwidth()
-CHANNELS = wf0.getnchannels()
-LEN      = wf0.getnframes()
-wf0.close()
+RATE = 22050
+WIDTH = 2
+CHANNELS = 1
+LEN = 1 * RATE   # 1 second
 
-model = models.load_model('super_ult_model.h5')
+model = models.load_model('mfcc_cnn_model_all.h5')
 
 
 def is_silent(data, THRESHOLD):
@@ -42,24 +39,26 @@ def extract_mfcc(file, fmax, nMel):
     y, sr = librosa.load(file)
     
     plt.figure(figsize=(3, 3), dpi=100)
-    D = librosa.amplitude_to_db(librosa.stft(y), ref=np.max)
-    librosa.display.specshow(D)
+    
+    S = librosa.feature.melspectrogram(y=y, sr=sr, n_mels=nMel, fmax=fmax)
+    librosa.display.specshow(librosa.logamplitude(S, ref_power=np.max), fmax=fmax)
+    
     plt.xticks([])
     plt.yticks([])
     plt.tight_layout()
     plt.savefig('tmp/tmp/myImg.jpg', bbox_inches='tight', pad_inches=-0.1)
-    plt.close()
     
+    plt.close()  
     return
 
 def predict():
     # MFCCs of the test audio
-    extract_mfcc('myNumber.wav', 8000, 128)
+    extract_mfcc('myNumber.wav', 8000, 256)
     test_datagen = ImageDataGenerator(
             rescale=1./255,
-            shear_range=0.2,
-            zoom_range=0.2,
-            horizontal_flip=True)
+            shear_range=0,
+            zoom_range=0,
+            horizontal_flip=False)
     test_generator = test_datagen.flow_from_directory(
             'tmp',
             target_size=(nrow, ncol),
@@ -121,11 +120,10 @@ while flag < 10:
                      
                 if is_silent(input_value, 100):
                     numSilence += 1
-#                    output_value = np.zeros(BLOCKSIZE) 
  
                 output_value = np.array(input_value)
         
-                if numSilence > 5:
+                if numSilence > RATE/8000*5:
                     break
         
                 output_value = output_value.astype(int)
