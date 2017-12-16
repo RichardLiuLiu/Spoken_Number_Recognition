@@ -17,9 +17,6 @@ Draw the spectrogram of each `.wav` file, and save as an image. In this way, the
 
 Use CNN to build a classifier for the dataset. The CNN model includes 2 Dense (fully connected) layers and 5 Convolution layers, with Max-Pooling and BatchNormalization layers in it.
 
-## File Architecture
-
-
 ## Evaluation
 
 
